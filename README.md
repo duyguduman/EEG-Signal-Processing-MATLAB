@@ -17,7 +17,6 @@ This project is designed to help beginners:
 - generate a controlled synthetic EEG recording,
 - visualize **multichannel EEG signals**,
 - inspect a full recording with **eyes-closed (EC)** and **eyes-open (EO)** blocks,
-- zoom into short signal segments,
 - explore a first **FFT-based frequency visualization** before moving to PSD and more advanced analyses.
 
 ---
@@ -188,11 +187,7 @@ This figure compares the FFT amplitude spectra of a posterior channel during eye
 
 ## Output Files
 
-The visualization script saves figures in three formats:
-
-- **PNG** → convenient for GitHub and reports
-- **SVG** → scalable vector format for high-quality documentation
-- **FIG** → editable MATLAB figure format
+The visualization script saves figures in three formats. 
 
 ---
 
@@ -204,16 +199,6 @@ The visualization script saves figures in three formats:
 - The FFT plots in Tutorial 01 are introductory visualizations. A more formal treatment of **Power Spectral Density (PSD)** and **Welch's method** should be introduced in a later tutorial.
 - Topographic mapping (**topomap**) is not the main focus of the current tutorial and can be added in a future tutorial.
 
----
-
-## Suggested Next Steps
-
-Possible future tutorial extensions:
-
-- **Tutorial 02:** Power Spectral Density (PSD) and Welch's method
-- **Tutorial 03:** Scalp topographic mapping (topomap)
-- **Tutorial 04:** Time-frequency analysis (STFT, wavelets)
-- **Tutorial 05:** Connectivity and graph-based EEG analysis
 
 ---
 
