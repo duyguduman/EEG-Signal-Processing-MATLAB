@@ -1,216 +1,139 @@
-# EEG Signal Processing in MATLAB
+# EEG Signal Processing with MATLAB
 
-**A beginner-friendly MATLAB project for generating and visualizing a synthetic multichannel EEG recording**
+**An open-source tutorial series on EEG simulation, visualization, and signal processing using MATLAB.**
 
-This repository contains a small educational EEG project built in **MATLAB**. It introduces the basic structure of an EEG dataset, demonstrates how to generate a **synthetic 64-channel recording**, and shows how to visualize EEG signals in the **time domain** and make a first transition toward the **frequency domain**.
+This repository explores the computational foundations of electroencephalography (EEG) through documented MATLAB scripts and reproducible examples. The first tutorials cover the generation of a **64-channel synthetic EEG recording**, visualization of multichannel time series, and an introduction to the frequency domain using the **Fast Fourier Transform (FFT)**. Further signal-processing methods will be added as the series develops.
 
-> **Important:** This dataset is completely **synthetic**. It is **not** a recording from a human participant and should be used only for education, coding practice, and method demonstrations.
+> **Data disclaimer:** All EEG signals in this repository are **synthetic**, not recordings from human participants. The examples are intended for education and methodological demonstrations; the simulation is not a physiologically validated model of human EEG.
 
----
+## What you'll learn
 
-## Project Goals
+- How EEG data are organized as **channels × samples**, with electrode labels, positions, and sampling metadata.
+- How to build a controlled EEG-like simulation with oscillatory activity, condition blocks, and artifacts.
+- How to inspect **multichannel recordings** and individual electrode traces in the time domain.
+- How to introduce **frequency-domain analysis** using the FFT and compare simulated eyes-closed (EC) and eyes-open (EO) conditions.
+- How to export reproducible figures for scientific documentation.
 
-This project is designed to help beginners:
-
-- understand how EEG data can be stored in MATLAB,
-- work with **channel labels**, **electrode coordinates**, and **sampling frequency**,
-- generate a controlled synthetic EEG recording,
-- visualize **multichannel EEG signals**,
-- inspect a full recording with **eyes-closed (EC)** and **eyes-open (EO)** blocks,
-- explore a first **FFT-based frequency visualization** before moving to PSD and more advanced analyses.
-
----
-
-## Repository Structure
+## Repository structure
 
 ```text
-ProjectN1/
+EEG-Signal-Processing-MATLAB/
 ├── README.md
+├── LICENSE
 ├── data/
 │   ├── electrodes.tsv
 │   └── synthetic_eeg_64ch.mat
 ├── figures/
-│   ├── 01_raw_traces.png
-│   ├── 01_raw_traces.svg
-│   ├── 01_raw_traces.fig
-│   ├── 01_O1_full_recording.png
-│   ├── 01_O1_full_recording.svg
-│   ├── 01_O1_full_recording.fig
-│   ├── 01_O1_zoom.png
-│   ├── 01_O1_zoom.svg
-│   ├── 01_O1_zoom.fig
-│   ├── 01_O1_fft_spectrum.png
-│   ├── 01_O1_fft_spectrum.svg
-│   ├── 01_O1_fft_spectrum.fig
-│   ├── 01_EC_EO_fft_comparison.png
-│   ├── 01_EC_EO_fft_comparison.svg
-│   └── 01_EC_EO_fft_comparison.fig
+│   ├── 01_raw_traces.{png,svg,fig}
+│   ├── 01_O1_full_recording.{png,svg,fig}
+│   ├── 01_O1_zoom.{png,svg,fig}
+│   ├── 01_O1_fft_spectrum.{png,svg,fig}
+│   └── 01_EC_EO_fft_comparison.{png,svg,fig}
 └── matlab/
     ├── 00_generate_synthetic_eeg.m
     └── 01_visualize_raw_eeg.m
 ```
 
----
-
 ## Requirements
 
-- **MATLAB R2024** (or a compatible recent version)
-- No EEGLAB required for the current tutorials
-- No third-party toolboxes required for the core scripts
+- **MATLAB R2024**.
+- No EEGLAB or third-party EEG toolbox is required for the current tutorials.
 
----
+## Getting started
 
-## Getting Started
-
-### 1. Open the project in MATLAB
-Set your **Current Folder** to the `matlab` directory.
-
-```matlab
-cd('path_to_ProjectN1/matlab')
-```
-
-### 2. Generate the synthetic EEG dataset
-Run:
+1. Download or clone this repository from [GitHub](https://github.com/duyguduman/EEG-Signal-Processing-MATLAB).
+2. In MATLAB, set the **Current Folder** to the repository's `matlab` subfolder. Both scripts use `fileparts(pwd)` to locate the project root, so this step is important.
+3. Run Tutorial 00 to regenerate the synthetic dataset, or use the supplied `.mat` file directly.
+4. Run Tutorial 01 to load the dataset, display the EEG figures, and export them to `figures/`.
 
 ```matlab
-run('00_generate_synthetic_eeg.m')
+% Run these commands with Current Folder set to:
+% EEG-Signal-Processing-MATLAB/matlab
+
+run('00_generate_synthetic_eeg.m');
+run('01_visualize_raw_eeg.m');
 ```
 
-This script creates a synthetic 64-channel EEG dataset and saves it to:
+The MATLAB scripts contain numbered `%%` sections, so you can also work through them one section at a time in the MATLAB Editor.
 
-```text
-data/synthetic_eeg_64ch.mat
-```
+## Tutorials
 
-### 3. Visualize the EEG recording
-Run:
+### Tutorial 00 — Synthetic EEG generation
 
-```matlab
-run('01_visualize_raw_eeg.m')
-```
+**Script:** [`00_generate_synthetic_eeg.m`](matlab/00_generate_synthetic_eeg.m)
 
-This script loads the synthetic dataset, creates several figures, and saves them to:
+Generates a synthetic recording with **64 EEG channels**, a **256 Hz** sampling rate, and a duration of **120 seconds**. The simulation includes delta-, theta-, alpha-, and beta-like components, spatially varying amplitudes, alternating EC/EO blocks, 1/f-like background noise, artificial eye blinks, muscle-like artifacts, and an intentionally noisy segment. The signal is then assigned a synthetic average reference.
 
-```text
-figures/
-```
+The parameter values and artifact models were selected for instructional purposes; they are not estimates from participant recordings.
 
----
+### Tutorial 01 — EEG visualization and an introduction to FFT
 
-## Tutorial Overview
+**Script:** [`01_visualize_raw_eeg.m`](matlab/01_visualize_raw_eeg.m)
 
-### Tutorial 00 — Generate a Synthetic EEG Dataset
-**File:** `matlab/00_generate_synthetic_eeg.m`
+Loads the generated recording and demonstrates channel selection by electrode name, vertically offset multichannel traces, inspection of a full channel and a short excerpt, single-sided FFT amplitude spectra, and a basic EC/EO spectral comparison. The script exports **PNG**, **SVG**, and editable MATLAB **FIG** files.
 
-This script demonstrates how to build a simple synthetic EEG recording with:
+The FFT visualizations are introductory and should not be interpreted as PSD estimates. Spectral estimation and Welch's method will be addressed separately.
 
-- **64 channels**
-- **256 Hz** sampling frequency
-- **120 seconds** of data
-- standard electrode labels and coordinates
-- delta, theta, alpha, and beta-like components
-- alternating **eyes-closed (EC)** and **eyes-open (EO)** blocks
-- simulated **eye-blink artifacts**
-- simulated **muscle-like artifacts**
-- an intentionally noisy channel segment
-- a synthetic average reference
+## Simulated recording design
 
-### Tutorial 01 — Visualize a Multichannel EEG Recording
-**File:** `matlab/01_visualize_raw_eeg.m`
-
-This script demonstrates how to:
-
-- load the EEG dataset,
-- inspect the data matrix,
-- create a time vector,
-- select channels by their names,
-- visualize a 5-second multichannel excerpt,
-- inspect a full 120-second recording from a posterior channel,
-- zoom into a short EEG segment,
-- visualize the FFT amplitude spectrum,
-- compare EC and EO spectra from the same channel,
-- save figures as **PNG**, **SVG**, and **MATLAB FIG** files.
-
----
-
-## Synthetic Recording Design
-
-The current synthetic dataset includes alternating resting-state blocks:
-
-| Time Interval (s) | Condition |
+| Time (s) | Condition |
 |---|---|
-| 0–30 | Eyes Closed (EC) |
-| 30–60 | Eyes Open (EO) |
-| 60–90 | Eyes Closed (EC) |
-| 90–120 | Eyes Open (EO) |
+| 0–30 | Eyes closed (EC) |
+| 30–60 | Eyes open (EO) |
+| 60–90 | Eyes closed (EC) |
+| 90–120 | Eyes open (EO) |
 
-Posterior alpha activity was intentionally simulated to be stronger during **eyes-closed** periods.
+Posterior alpha activity was **intentionally made stronger in EC blocks**, so an EC/EO difference is an expected property of the simulation rather than an empirical finding.
 
----
+## Figures
 
-## Example Figures
+### 1. Multichannel EEG traces
 
-### 1. Multichannel EEG visualization (5-second excerpt)
-A subset of 16 channels is displayed using vertical offsets for readability.
+Sixteen selected channels over a five-second window, displayed with vertical offsets for readability. The offsets are for plotting only and are not changes to the stored EEG signals.
 
-![Synthetic EEG multichannel raw traces](figures/01_raw_traces.png)
+![Synthetic multichannel EEG traces](figures/01_raw_traces.png)
 
----
+### 2. Full O1 recording: eyes closed and eyes open
 
-### 2. Full O1 recording with EC/EO blocks
-The O1 electrode is shown across the full 120-second synthetic recording, with background shading for eyes-closed and eyes-open intervals.
+The O1 channel over the full 120-second recording, with background shading indicating the simulated EC and EO blocks.
 
-![O1 full recording with EC and EO blocks](figures/01_O1_full_recording.png)
+![O1 recording and EC/EO blocks](figures/01_O1_full_recording.png)
 
----
+### 3. A one-second O1 excerpt
 
-### 3. Zoomed one-second EEG segment
-A short excerpt helps visualize the waveform on a smaller time scale.
+A closer look at the time-domain waveform; shorter intervals make individual oscillations easier to inspect.
 
-![Zoomed O1 EEG segment](figures/01_O1_zoom.png)
+![Zoomed O1 EEG excerpt](figures/01_O1_zoom.png)
 
----
+### 4. O1 FFT amplitude spectrum
 
-### 4. FFT amplitude spectrum of O1
-This figure provides a first look at the signal in the frequency domain.
+A first visualization of the frequency content of an EC segment. This plot shows a **single-sided amplitude spectrum**, not power spectral density.
 
-![FFT amplitude spectrum of O1](figures/01_O1_fft_spectrum.png)
+![O1 FFT amplitude spectrum](figures/01_O1_fft_spectrum.png)
 
----
+### 5. EC versus EO: FFT amplitude spectra
 
-### 5. EC vs EO frequency-domain comparison
-This figure compares the FFT amplitude spectra of a posterior channel during eyes-closed and eyes-open intervals.
+A comparison of equally long synthetic EC and EO segments from O1. Posterior alpha modulation was built into the generator, so differences near the alpha range should be interpreted in that context.
 
-![EC vs EO FFT comparison](figures/01_EC_EO_fft_comparison.png)
+![EC and EO FFT amplitude spectrum comparison](figures/01_EC_EO_fft_comparison.png)
 
----
+## Scope and limitations
 
-## Output Files
+- The signals and artifacts are simplified simulations, **not physiologically validated EEG or EMG recordings**.
+- Channel-level spatial weighting is not a model of individual cortical sources.
+- The current simulation does **not** provide ground truth for evaluating directed connectivity methods.
+- The FFT figures introduce the frequency domain; **PSD estimation, Welch's method, and time-frequency analysis** are separate topics.
+- **Scalp topographic maps** will be addressed in a dedicated tutorial. Interpolated scalp maps should not be interpreted as source localization.
 
-The visualization script saves figures in three formats. 
+## Planned extensions
 
----
+Future tutorials may cover PSD and Welch's method, scalp topographic mapping, STFT, wavelet and synchrosqueezing transforms, and EEG connectivity analyses. Planned topics are not yet part of the released scripts.
 
-## Notes and Limitations
+## License and reuse
 
-- This project uses **synthetic** EEG data only.
-- The simulated signals are designed for **teaching and demonstration**, not physiological validation.
-- The frequency components, spatial weights, and artifact models are intentionally simplified.
-- The FFT plots in Tutorial 01 are introductory visualizations. A more formal treatment of **Power Spectral Density (PSD)** and **Welch's method** should be introduced in a later tutorial.
-- Topographic mapping (**topomap**) is not the main focus of the current tutorial and can be added in a future tutorial.
-
-
----
-
-## Citation / Use
-
-If you reuse or adapt this educational material, please clearly state that the dataset is **synthetic** and that the project was developed for learning and demonstration purposes.
-
----
+The original MATLAB code is shared under the [MIT License](LICENSE). If reusing the teaching materials, please make clear that the example EEG dataset is synthetic. The source and redistribution permissions for any third-party electrode coordinate templates should be checked separately.
 
 ## Author
 
-**Duygu Duman**
-
-Biomedical Engineering / EEG Signal Processing / Brain Connectivity / MATLAB-based analysis
-
+**Duygu Duman**  
+Biomedical Engineering · EEG Signal Processing · Brain Connectivity
